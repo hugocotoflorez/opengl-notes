@@ -2,6 +2,8 @@
 
 [OpenGL wiki - rendering](https://www.khronos.org/opengl/wiki/Rendering_Pipeline_Overview)
 
+![Diagram](https://www.khronos.org/opengl/wiki/Rendering_Pipeline_Overview)
+
 ## Vertex Processing
 
 ### Vertex Shader
