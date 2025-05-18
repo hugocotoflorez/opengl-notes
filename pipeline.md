@@ -2,7 +2,7 @@
 
 [OpenGL wiki - rendering](https://www.khronos.org/opengl/wiki/Rendering_Pipeline_Overview)
 
-![Diagram](https://www.khronos.org/opengl/wiki/Rendering_Pipeline_Overview)
+![Diagram](https://www.khronos.org/opengl/wiki_opengl/images/RenderingPipeline.png)
 
 ## Vertex Processing
 
