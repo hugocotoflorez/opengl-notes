@@ -28,8 +28,8 @@ Primitives are divided into a sequence of individual base primitives
 `gl_Position`: Vertex clip space position
 
 #### Perspective divide
-$$
-{
+
+$$ {
 \begin{pmatrix}
     x_{ndc}\\
     y_{ndc}\\
@@ -37,8 +37,8 @@ $$
 end{pmatrix}
 }
 $$
-=
 $$
+    =
 {
 \begin{pmatrix}
     {
