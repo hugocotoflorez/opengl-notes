@@ -59,16 +59,16 @@ covered by the primitive being rasterized
 - (**out**): color, deph value and unmodified stencil value
 
 ## Per-Sample Processing
-### Pixel Ownership Test
-### Scissor Test
-### Multisample operations
-### Stencil Test
-### Depth Test
-### Occlusion Query Updating
-### Blending
-### sRGB Conversion
-### Dithering
-### Logical Operations
+- **Pixel Ownership Test**
+- **Scissor Test**
+- **Multisample operations**
+- **Stencil Test**
+- **Depth Test**
+- **Occlusion Query Updating**
+- **Blending**
+- **sRGB Conversion**
+- **Dithering**
+- **Logical Operations**
 
 ## Draw to screen
 Finally you will be able to see that it does not work as expected.
