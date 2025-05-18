@@ -34,7 +34,7 @@ $$ {
     x_{ndc}\\
     y_{ndc}\\
     z_{ndc}
-end{pmatrix}
+\end{pmatrix}
 }
 $$
 $$
