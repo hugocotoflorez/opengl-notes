@@ -28,7 +28,31 @@ Primitives are divided into a sequence of individual base primitives
 `gl_Position`: Vertex clip space position
 
 #### Perspective divide
-$$ {\begin{pmatrix}x_{ndc}\\y_{ndc}\\z_{ndc}\end{pmatrix}}={\begin{pmatrix}{\tfrac {x_{c}}{w_{c}}}\\{\tfrac {y_{c}}{w_{c}}}\\{\tfrac {z_{c}}{w_{c}}}\end{pmatrix}} $$
+$$
+{
+\begin{pmatrix}
+    x_{ndc}\\
+    y_{ndc}\\
+    z_{ndc}
+end{pmatrix}
+}
+$$
+=
+$$
+{
+\begin{pmatrix}
+    {
+        \tfrac {x_{c}}{w_{c}}
+    }\\
+    {
+        \tfrac {y_{c}}{w_{c}}
+    }\\
+    {
+        \tfrac {z_{c}}{w_{c}}
+    }
+\end{pmatrix}
+}
+$$
 
 #### Viewport transform
 
