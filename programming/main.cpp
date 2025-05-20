@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 
 #include <GLFW/glfw3.h>
+#include <glm/exponential.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -10,7 +11,7 @@
 float Aspect;
 using namespace glm;
 
-#define PHONG 0
+#define PHONG 1
 
 #if !defined(PHONG) || PHONG
 const char *vShader = R"(
@@ -132,9 +133,13 @@ calc_med(float *vec, int size)
                                 count++;
                         }
                 }
-                vec[i + 3] /= count;
-                vec[i + 4] /= count;
-                vec[i + 5] /= count;
+                float mod = sqrt(
+                vec[i + 3] * vec[i + 3] +
+                vec[i + 4] * vec[i + 4] +
+                vec[i + 5] * vec[i + 5]);
+                vec[i + 3] /= mod;
+                vec[i + 4] /= mod;
+                vec[i + 5] /= mod;
         }
 }
 
