@@ -10,6 +10,9 @@
 float Aspect;
 using namespace glm;
 
+#define PHONG 0
+
+#if !defined(PHONG) || PHONG
 const char *vShader = R"(
 #version 330 core
 layout (location = 0) in vec3 aPos;
@@ -63,47 +66,49 @@ void main() {
 }
 )";
 
-// const char *vShader = R"(
-// #version 330 core
-// layout (location = 0) in vec3 aPos;
-// layout (location = 1) in vec3 aNormal;
-// layout (location = 2) in vec3 aColor;
-// uniform mat4 model;
-// uniform mat4 view;
-// uniform mat4 projection;
-// uniform vec3 lightColor;
-// uniform vec3 lightPos;
-// uniform vec3 viewPos;
-// uniform float Ka;
-// uniform float Kd;
-// uniform float Ks;
-// out vec3 Color;
-// void main() {
-//         vec3 Normal = mat3(transpose(inverse(model))) * aNormal;
-//         vec3 FragPos = vec3(model * vec4(aPos, 1.0));
-//         gl_Position = projection * view * model * vec4(aPos, 1.0);
-//
-//         // Ambient
-//         vec3 ambient = lightColor * Ka;
-//
-//         // diffuse
-//         vec3 norm = normalize(Normal);
-//         vec3 lightDir = normalize(lightPos - FragPos); // direction from fragment to light
-//         float diff = max(dot(norm, lightDir), 0.0);
-//         vec3 diffuse = diff * lightColor * Kd;
-//
-//         Color = (ambient + diffuse) * aColor;
-// }
-// )";
-//
-// const char *fShader = R"(
-// #version 330 core
-// out vec4 FragColor;
-// in vec3 Color;
-// void main() {
-//         FragColor = vec4(Color, 1.0);
-// }
-// )";
+#else
+const char *vShader = R"(
+#version 330 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aNormal;
+layout (location = 2) in vec3 aColor;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+uniform vec3 lightColor;
+uniform vec3 lightPos;
+uniform vec3 viewPos;
+uniform float Ka;
+uniform float Kd;
+uniform float Ks;
+out vec3 Color;
+void main() {
+        vec3 Normal = mat3(transpose(inverse(model))) * aNormal;
+        vec3 FragPos = vec3(model * vec4(aPos, 1.0));
+        gl_Position = projection * view * model * vec4(aPos, 1.0);
+
+        // Ambient
+        vec3 ambient = lightColor * Ka;
+
+        // diffuse
+        vec3 norm = normalize(Normal);
+        vec3 lightDir = normalize(lightPos - FragPos); // direction from fragment to light
+        float diff = max(dot(norm, lightDir), 0.0);
+        vec3 diffuse = diff * lightColor * Kd;
+
+        Color = (ambient + diffuse) * aColor;
+}
+)";
+
+const char *fShader = R"(
+#version 330 core
+out vec4 FragColor;
+in vec3 Color;
+void main() {
+        FragColor = vec4(Color, 1.0);
+}
+)";
+#endif
 
 #define Point(a, b, c) a, b, c
 #define Normal(a, b, c) a, b, c
@@ -111,6 +116,27 @@ void main() {
 #define Face(a, b, c, d) a, b, c, c, d, a
 #define Vertex(a, b, c) a, b, c
 
+void
+calc_med(float *vec, int size)
+{
+        for (int i = 0; i < size; i += 9) {
+                int count = 1;
+                for (int j = 0; j < size; j += 9) {
+                        if (i != j &&
+                            vec[i + 0] == vec[j + 0] &&
+                            vec[i + 1] == vec[j + 1] &&
+                            vec[i + 2] == vec[j + 2]) {
+                                vec[i + 3] += vec[j + 3];
+                                vec[i + 4] += vec[j + 4];
+                                vec[i + 5] += vec[j + 5];
+                                count++;
+                        }
+                }
+                vec[i + 3] /= count;
+                vec[i + 4] /= count;
+                vec[i + 5] /= count;
+        }
+}
 
 float cube[] = {
         Vertex(Point(-0.5, -0.5, -0.5), Normal(0, 0, -1), Color(1, 0, 0)),
@@ -210,6 +236,7 @@ main()
         glDeleteShader(vs);
         glDeleteShader(fs);
 
+        calc_med(cube, sizeof cube / sizeof *cube);
 
         // VAO/VBO/EBO
         unsigned int vao, vbo, ebo;
@@ -243,7 +270,7 @@ main()
                 float t = glfwGetTime();
 #define camPos 0, 0.0f, -3.0f
 #define lightPos 0.0f, 0.0f, -1.0f
-                glm::mat4 model = glm::rotate(glm::mat4(1.0f), t, glm::vec3(0.5f, 1.0f,0.0f));
+                glm::mat4 model = glm::rotate(glm::mat4(1.0f), t, glm::vec3(0.5f, 1.0f, 0.0f));
                 glm::mat4 view = glm::lookAt(vec3(camPos), vec3(0, 0, 0), vec3(0, 1.0f, 0));
                 glm::mat4 projection = glm::perspective(glm::radians(45.0f), Aspect, 0.1f, 100.0f);
 
