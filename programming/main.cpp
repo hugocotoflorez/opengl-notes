@@ -11,6 +11,9 @@
 float Aspect;
 using namespace glm;
 
+/* 1: do not apply vector sum and modulo division for each vertex */
+#define DO_NO_CALC_NORMALS 0
+/* 1: apply phong */
 #define PHONG 1
 
 #if !defined(PHONG) || PHONG
@@ -120,6 +123,9 @@ void main() {
 void
 calc_med(float *vec, int size)
 {
+#if defined(DO_NO_CALC_NORMALS) && DO_NO_CALC_NORMALS
+        return;
+#endif
         for (int i = 0; i < size; i += 9) {
                 int count = 1;
                 for (int j = 0; j < size; j += 9) {
@@ -142,6 +148,7 @@ calc_med(float *vec, int size)
                 vec[i + 5] /= mod;
         }
 }
+
 
 float cube[] = {
         Vertex(Point(-0.5, -0.5, -0.5), Normal(0, 0, -1), Color(1, 0, 0)),
